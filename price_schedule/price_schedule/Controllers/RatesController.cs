@@ -62,5 +62,36 @@ namespace RatesSchedule.Controllers
 
       return CreatedAtRoute("GetRate", new { id = item.Id }, item);
     }
+
+    [HttpPut("{id}")]
+    public IActionResult Update(long id, [FromBody] RateItem item)
+    {
+      if (item == null || item.Id != id)
+      {
+        return BadRequest();
+      }
+
+      var rate = _context.RateItems.Find(id);
+      if (rate == null)
+      {
+        return NotFound();
+      }
+
+      rate.Name = item.Name;
+      rate.StartTime = item.StartTime;
+      rate.EndTime = item.EndTime;
+
+      rate.Monday = item.Monday;
+      rate.Tuesday = item.Tuesday;
+      rate.Wednesday = item.Wednesday;
+      rate.Thursday = item.Thursday;
+      rate.Friday = item.Friday;
+      rate.Saturday = item.Saturday;
+      rate.Sunday = item.Sunday;
+
+      _context.RateItems.Update(rate);
+      _context.SaveChanges();
+      return NoContent();
+    }
   }
 }
