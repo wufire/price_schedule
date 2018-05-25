@@ -1,28 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
+
 namespace RatesSchedule.Models
 {
   public class RateItem
   {
     public long Id { get; set; }
-    public string Name { get; set; }
-    //public RateDayOfWeek Days { get; set; }
-    public TimeSpan StartTime { get; set; }
-    public TimeSpan EndTime { get; set; }
 
-    public bool Sunday { get; set; }
-    public bool Monday { get; set; }
-    public bool Tuesday { get; set; }
-    public bool Wednesday { get; set; }
-    public bool Thursday { get; set; }
-    public bool Friday { get; set; }
-    public bool Saturday { get; set; }
-  }
+    [Required]
+    public string Times
+    {
+      get;
+      set;
+    }
 
-  public class RateDayOfWeek
-  {
-    //public long Id { get; set; }
-    //public DayOfWeek Day { get; set; }
+    string _days;
 
+    [Required]
+    public string Days
+    {
+      get { return _days; }
+      set
+      {
+        _days = value;
+        item.Days = item.ConvertDays(value);
+      }
+    }
+
+    [Required]
+    [Range(0, int.MaxValue)]
+    public int? Price
+    {
+      get { return item.Price; }
+      set { item.Price = (int)value; }
+    }
+
+    RateDomainItem item { get; }
+
+    public RateItem()
+    {
+      item = new RateDomainItem();
+    }
   }
 }

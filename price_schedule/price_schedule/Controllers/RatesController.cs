@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RatesSchedule.Models;
 
@@ -10,7 +8,7 @@ namespace RatesSchedule.Controllers
   [Route("api/[controller]")]
   public class RatesController : ControllerBase
   {
-    private readonly RatesContext _context;
+    readonly RatesContext _context;
 
     public RatesController(RatesContext context)
     {
@@ -19,12 +17,11 @@ namespace RatesSchedule.Controllers
       if (_context.RateItems.Count() == 0)
       {
 
-        RateItem newItem = new RateItem
+        var newItem = new RateItem
         {
-          Name = "test",
-          StartTime = new TimeSpan(9, 0, 0),
-          EndTime = new TimeSpan(21, 0, 0),
-          Monday = true
+          Price = 2000,
+          Days = "mon,tues",
+          Times = "900-2000"
         };
 
         _context.RateItems.Add(newItem);
@@ -46,21 +43,28 @@ namespace RatesSchedule.Controllers
       {
         return NotFound();
       }
+      if (!ModelState.IsValid)
+      {
+        return BadRequest(ModelState);
+      }
       return Ok(item);
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] RateItem item)
+    public IActionResult Create([FromBody]RateItem item)
     {
       if (item == null)
       {
         return BadRequest();
       }
+      if (ModelState.IsValid)
+      {
+        _context.RateItems.Add(item);
+        _context.SaveChanges();
 
-      _context.RateItems.Add(item);
-      _context.SaveChanges();
-
-      return CreatedAtRoute("GetRate", new { id = item.Id }, item);
+        return CreatedAtRoute("GetRate", new { id = item.Id }, item);
+      }
+      return BadRequest(ModelState);
     }
 
     [HttpPut("{id}")]
@@ -77,19 +81,25 @@ namespace RatesSchedule.Controllers
         return NotFound();
       }
 
-      rate.Name = item.Name;
-      rate.StartTime = item.StartTime;
-      rate.EndTime = item.EndTime;
-
-      rate.Monday = item.Monday;
-      rate.Tuesday = item.Tuesday;
-      rate.Wednesday = item.Wednesday;
-      rate.Thursday = item.Thursday;
-      rate.Friday = item.Friday;
-      rate.Saturday = item.Saturday;
-      rate.Sunday = item.Sunday;
+      rate.Days = item.Days;
+      rate.Times = item.Times;
+      rate.Price = item.Price;
 
       _context.RateItems.Update(rate);
+      _context.SaveChanges();
+      return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(long id)
+    {
+      var rate = _context.RateItems.Find(id);
+      if (rate == null)
+      {
+        return NotFound();
+      }
+
+      _context.RateItems.Remove(rate);
       _context.SaveChanges();
       return NoContent();
     }
