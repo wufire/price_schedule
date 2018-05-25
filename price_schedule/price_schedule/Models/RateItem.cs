@@ -6,11 +6,17 @@ namespace RatesSchedule.Models
   {
     public long Id { get; set; }
 
+    string _times;
+
     [Required]
     public string Times
     {
-      get;
-      set;
+      get { return _times; }
+      set
+      {
+        _times = value;
+        item.SetTimes(value);
+      }
     }
 
     string _days;

@@ -4,9 +4,17 @@ namespace RatesSchedule.Models
 {
   public class RateDomainItem
   {
+    public long Id { get; set; }
     public DayFlags Days { get; set; }
     public TimeSpan StartTime { get; set; }
     public TimeSpan EndTime { get; set; }
+    public TimeSpan RateDuration
+    {
+      get
+      {
+        return EndTime - StartTime;
+      }
+    }
 
     public int Price { get; set; }
 
@@ -45,6 +53,23 @@ namespace RatesSchedule.Models
         }
       }
       return flags;
+    }
+
+    public void SetTimes(string timeString)
+    {
+      var times = timeString.Split('-');
+
+      StartTime = TimeSpanFromString(times[0]);
+      EndTime = TimeSpanFromString(times[1]);
+    }
+
+    private TimeSpan TimeSpanFromString(string timeInhhmmFormat)
+    {
+      var span = timeInhhmmFormat.Insert(2, ":");
+      // This is because TimeSpan.Parse does not handle 24:00 and up
+      return new TimeSpan(int.Parse(span.Split(':')[0]),    // hours
+                           int.Parse(span.Split(':')[1]),    // minutes
+                           0);
     }
   }
 

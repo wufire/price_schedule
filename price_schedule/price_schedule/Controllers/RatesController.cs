@@ -21,7 +21,7 @@ namespace RatesSchedule.Controllers
         {
           Price = 2000,
           Days = "mon,tues",
-          Times = "900-2000"
+          Times = "0900-2000"
         };
 
         _context.RateItems.Add(newItem);
