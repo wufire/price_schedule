@@ -19,6 +19,6 @@ namespace RatesSchedule.Models
     public int? Price
     { get; set; }
 
-    public virtual RateDomainItem DomainItem { get; set; }
+    public RateDomainItem DomainItem { get; set; }
   }
 }

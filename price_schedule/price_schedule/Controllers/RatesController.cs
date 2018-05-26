@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using RatesSchedule.Data;
+using Microsoft.EntityFrameworkCore;
 using RatesSchedule.Models;
 
 namespace RatesSchedule.Controllers
@@ -19,20 +19,20 @@ namespace RatesSchedule.Controllers
     [HttpGet]
     public List<RateItem> GetAll()
     {
-      var itemList = _context.RateItems.ToList();
-      var returnList = new List<RateItem>();
-      foreach (var rateItem in itemList)
-      {
-        rateItem.DomainItem = _context.RateDomainItems.Where(i => i.RateItemId == rateItem.Id).Single();
-        returnList.Add(rateItem);
-      }
-      return returnList;
+      var itemList = _context.RateItems
+                             .Include(r => r.DomainItem)
+                             .ToList();
+
+      return itemList;
     }
 
     [HttpGet("{id}", Name = "GetRate")]
     public IActionResult GetById(long id)
     {
-      var item = _context.RateItems.Find(id);
+      var item = _context.RateItems
+                         .Where(i => i.Id == id)
+                         .Include(r => r.DomainItem)
+                         .Single();
       if (item == null)
       {
         return NotFound();
@@ -109,9 +109,6 @@ namespace RatesSchedule.Controllers
       {
         return BadRequest(ModelState);
       }
-
-      domainItem.RateItem = _context.RateItems.Find(domainItem.RateItemId);
-
       return Ok(domainItem);
     }
   }

@@ -21,8 +21,9 @@ namespace RatesSchedule.Models
     [Key]
     [ForeignKey("RateItem")]
     public long RateItemId { get; set; }
-    public virtual RateItem RateItem { get; set; }
-
+    // Leaving this navigation property commented 
+    // until I figure out the proper way to still have it without really messy JSON returns
+    //public RateItem RateItem { get; set; }
 
     public DayFlags ConvertDays(string dayString)
     {

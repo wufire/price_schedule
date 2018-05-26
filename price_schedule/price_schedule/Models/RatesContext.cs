@@ -11,7 +11,8 @@ namespace RatesSchedule.Models
 
     protected override void OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder modelBuilder)
     {
-      modelBuilder.Entity<RateItem>().HasOne(p => p.DomainItem).WithOne(p => p.RateItem);
+      modelBuilder.Entity<RateItem>().ToTable("RateItems");
+      modelBuilder.Entity<RateDomainItem>().ToTable("RateDomainItems");
     }
 
     public void AddRateItem(RateItem item)
@@ -22,8 +23,6 @@ namespace RatesSchedule.Models
       domainItem.Price = (int)item.Price;
 
       domainItem.RateItemId = item.Id;
-      domainItem.RateItem = item;
-
 
       item.DomainItem = domainItem;
 
