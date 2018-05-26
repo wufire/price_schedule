@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "price_schedule", "price_schedule\price_schedule.csproj", "{25150BC4-8D32-417C-92B5-72F4F45173ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RatesSchedule", "price_schedule\RatesSchedule.csproj", "{25150BC4-8D32-417C-92B5-72F4F45173ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
