@@ -17,22 +17,26 @@ namespace RatesSchedule.Controllers
       if (_context.RateItems.Count() == 0)
       {
 
-        var newItem = new RateItem
+        Create(new RateItem
         {
           Price = 2000,
           Days = "mon,tues",
           Times = "0900-2000"
-        };
-
-        _context.RateItems.Add(newItem);
-        _context.SaveChanges();
+        });
       }
     }
 
     [HttpGet]
     public List<RateItem> GetAll()
     {
-      return _context.RateItems.ToList();
+      var itemList = _context.RateItems.ToList();
+      var returnList = new List<RateItem>();
+      foreach (var rateItem in itemList)
+      {
+        rateItem.DomainItem = _context.RateDomainItems.Where(i => i.RateItemId == rateItem.Id).Single();
+        returnList.Add(rateItem);
+      }
+      return returnList;
     }
 
     [HttpGet("{id}", Name = "GetRate")]
@@ -59,7 +63,20 @@ namespace RatesSchedule.Controllers
       }
       if (ModelState.IsValid)
       {
+
+        var domainItem = new RateDomainItem();
+        domainItem.Days = domainItem.ConvertDays(item.Days);
+        domainItem.SetTimes(item.Times);
+        domainItem.Price = (int)item.Price;
+
+        domainItem.RateItemId = item.Id;
+        domainItem.RateItem = item;
+
+
+        item.DomainItem = domainItem;
         _context.RateItems.Add(item);
+        _context.RateDomainItems.Add(domainItem);
+
         _context.SaveChanges();
 
         return CreatedAtRoute("GetRate", new { id = item.Id }, item);
@@ -102,6 +119,24 @@ namespace RatesSchedule.Controllers
       _context.RateItems.Remove(rate);
       _context.SaveChanges();
       return NoContent();
+    }
+
+    [HttpGet("domain/{id}", Name = "GetDomainRate")]
+    public IActionResult GetDomainById(long id)
+    {
+      var domainItem = _context.RateDomainItems.Find(id);
+      if (domainItem == null)
+      {
+        return NotFound();
+      }
+      if (!ModelState.IsValid)
+      {
+        return BadRequest(ModelState);
+      }
+       
+      domainItem.RateItem = _context.RateItems.Find(domainItem.RateItemId);
+
+      return Ok(domainItem);
     }
   }
 }

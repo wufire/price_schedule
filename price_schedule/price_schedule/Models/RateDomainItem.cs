@@ -1,10 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RatesSchedule.Models
 {
   public class RateDomainItem
   {
-    public long Id { get; set; }
     public DayFlags Days { get; set; }
     public TimeSpan StartTime { get; set; }
     public TimeSpan EndTime { get; set; }
@@ -15,8 +16,13 @@ namespace RatesSchedule.Models
         return EndTime - StartTime;
       }
     }
-
     public int Price { get; set; }
+
+    [Key]
+    [ForeignKey("RateItem")]
+    public long RateItemId { get; set; }
+    public virtual RateItem RateItem { get; set; }
+
 
     public DayFlags ConvertDays(string dayString)
     {

@@ -9,6 +9,12 @@ namespace RatesSchedule.Models
     {
     }
 
+    protected override void OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder modelBuilder)
+    {
+      modelBuilder.Entity<RateItem>().HasOne(p => p.DomainItem).WithOne(p => p.RateItem);
+    }
+
     public DbSet<RateItem> RateItems { get; set; }
+    public DbSet<RateDomainItem> RateDomainItems { get; set; }
   }
 }
