@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using RatesSchedule.Data;
 using RatesSchedule.Models;
 
 namespace RatesSchedule.Controllers
@@ -13,17 +14,6 @@ namespace RatesSchedule.Controllers
     public RatesController(RatesContext context)
     {
       _context = context;
-
-      if (_context.RateItems.Count() == 0)
-      {
-
-        Create(new RateItem
-        {
-          Price = 2000,
-          Days = "mon,tues",
-          Times = "0900-2000"
-        });
-      }
     }
 
     [HttpGet]
@@ -63,21 +53,7 @@ namespace RatesSchedule.Controllers
       }
       if (ModelState.IsValid)
       {
-
-        var domainItem = new RateDomainItem();
-        domainItem.Days = domainItem.ConvertDays(item.Days);
-        domainItem.SetTimes(item.Times);
-        domainItem.Price = (int)item.Price;
-
-        domainItem.RateItemId = item.Id;
-        domainItem.RateItem = item;
-
-
-        item.DomainItem = domainItem;
-        _context.RateItems.Add(item);
-        _context.RateDomainItems.Add(domainItem);
-
-        _context.SaveChanges();
+        _context.AddRateItem(item);
 
         return CreatedAtRoute("GetRate", new { id = item.Id }, item);
       }
@@ -133,7 +109,7 @@ namespace RatesSchedule.Controllers
       {
         return BadRequest(ModelState);
       }
-       
+
       domainItem.RateItem = _context.RateItems.Find(domainItem.RateItemId);
 
       return Ok(domainItem);
