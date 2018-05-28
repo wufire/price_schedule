@@ -17,13 +17,13 @@ namespace RatesSchedule.Controllers
     }
 
     [HttpGet]
-    public List<RateItem> GetAll()
+    public IActionResult GetAll()
     {
       var itemList = _context.RateItems
                              .Include(r => r.DomainItem)
                              .ToList();
 
-      return itemList;
+      return Ok(itemList);
     }
 
     [HttpGet("{id}", Name = "GetRate")]
@@ -56,6 +56,22 @@ namespace RatesSchedule.Controllers
         _context.AddRateItem(item);
 
         return CreatedAtRoute("GetRate", new { id = item.Id }, item);
+      }
+      return BadRequest(ModelState);
+    }
+
+    [HttpPost("PostSchedule")]
+    public IActionResult Create([FromBody]RateScheduleData data)
+    {
+      if (data == null)
+      {
+        return BadRequest();
+      }
+      if (ModelState.IsValid)
+      {
+        _context.AddRateItems(data);
+
+        return GetAll();
       }
       return BadRequest(ModelState);
     }

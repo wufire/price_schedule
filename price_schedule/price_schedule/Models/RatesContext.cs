@@ -32,6 +32,14 @@ namespace RatesSchedule.Models
       SaveChanges();
     }
 
+    public void AddRateItems(RateScheduleData data)
+    {
+      foreach (var item in data.Rates)
+      {
+        AddRateItem(item);
+      }
+    }
+
     public DbSet<RateItem> RateItems { get; set; }
     public DbSet<RateDomainItem> RateDomainItems { get; set; }
   }
