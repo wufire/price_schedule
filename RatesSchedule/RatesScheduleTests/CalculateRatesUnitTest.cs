@@ -28,9 +28,13 @@ namespace RatesScheduleTests
     };
 
     [Fact]
+    // TODO: Weird quirk with this test. 
+    // DateTime.Parse converts to GMT, while the model [FromBody] parser does not
+    // This causes this test to fail (when it should succeed) ¯\_(ツ)_/¯
+    // Quick fix would be to ignore all those pesky timezones
+    // Real fix would be to accept timezones and also make rate time spans Date agnostic
     public void RateTimeTest()
     {
-
       List<RateDomainItem> domainItems = new List<RateDomainItem>();
       foreach (var item in rateItems)
       {

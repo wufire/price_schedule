@@ -25,6 +25,30 @@ namespace RatesSchedule.Models
     // until I figure out the proper way to still have it without really messy JSON returns
     //public RateItem RateItem { get; set; }
 
+    public bool CheckValidDay(DayOfWeek dayOfWeek)
+    {
+      switch (dayOfWeek)
+      {
+        case DayOfWeek.Monday:
+          return Days.Monday;
+        case DayOfWeek.Tuesday:
+          return Days.Tuesday;
+        case DayOfWeek.Wednesday:
+          return Days.Wednesday;
+        case DayOfWeek.Thursday:
+          return Days.Thursday;
+        case DayOfWeek.Friday:
+          return Days.Friday;
+        case DayOfWeek.Saturday:
+          return Days.Saturday;
+        case DayOfWeek.Sunday:
+          return Days.Sunday;
+        default:
+          // Unknown day of the week
+          throw new ArgumentException("Unknown Day of the Week");
+      }
+    }
+
     public DayFlags ConvertDays(string dayString)
     {
       var flags = new DayFlags();
@@ -56,7 +80,7 @@ namespace RatesSchedule.Models
             break;
           default:
             // poorly formatted day string
-            break;
+            throw new ArgumentException("Unknown Day String");
         }
       }
       return flags;

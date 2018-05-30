@@ -137,13 +137,39 @@ namespace RatesSchedule.Controllers
         return BadRequest(ModelState);
       }
 
-
-
-      return Ok();
+      long? result =
+        RateGivenTime(
+          request.StartTime,
+          request.EndTime,
+          _context.RateDomainItems.ToList());
+      if (result == null)
+      {
+        return Ok("unavailable");
+      }
+      return Ok(result);
     }
 
     public static long? RateGivenTime(DateTime start, DateTime end, List<RateDomainItem> rateItems)
     {
+      // Look for early escapes
+      if (end < start) { return null; }
+
+      // We don't support multi-day rates
+      if (start.Day != end.Day) { return null; }
+
+
+      foreach (var item in rateItems)
+      {
+        // Check Availability Date
+        // Check if valid start time
+        // Check if valid endtime
+        if (item.CheckValidDay(start.DayOfWeek)
+          && start.TimeOfDay >= item.StartTime
+          && end.TimeOfDay < item.EndTime)
+        {
+          return item.Price;
+        }
+      }
       return null;
     }
   }
