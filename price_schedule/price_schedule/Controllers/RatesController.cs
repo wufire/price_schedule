@@ -127,5 +127,18 @@ namespace RatesSchedule.Controllers
       }
       return Ok(domainItem);
     }
+
+    [HttpPost("rateprice")]
+    public IActionResult CalculateRate([FromBody] RateRequest request)
+    {
+      if (!ModelState.IsValid)
+      {
+        return BadRequest(ModelState);
+      }
+
+
+
+      return Ok();
+    }
   }
 }

@@ -9,7 +9,7 @@ namespace RatesSchedule.Models
     {
     }
 
-    protected override void OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.Entity<RateItem>().ToTable("RateItems");
       modelBuilder.Entity<RateDomainItem>().ToTable("RateDomainItems");
