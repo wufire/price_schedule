@@ -17,12 +17,7 @@ namespace RatesSchedule.Models
 
     public void AddRateItem(RateItem item)
     {
-      var domainItem = new RateDomainItem();
-      domainItem.Days = domainItem.ConvertDays(item.Days);
-      domainItem.SetTimes(item.Times);
-      domainItem.Price = (int)item.Price;
-
-      domainItem.RateItemId = item.Id;
+      var domainItem = CreateRateDomainItem(item);
 
       item.DomainItem = domainItem;
 
@@ -38,6 +33,18 @@ namespace RatesSchedule.Models
       {
         AddRateItem(item);
       }
+    }
+
+    public static RateDomainItem CreateRateDomainItem(RateItem item)
+    {
+      var domainItem = new RateDomainItem();
+      domainItem.Days = domainItem.ConvertDays(item.Days);
+      domainItem.SetTimes(item.Times);
+      domainItem.Price = (int)item.Price;
+
+      domainItem.RateItemId = item.Id;
+
+      return domainItem;
     }
 
     public DbSet<RateItem> RateItems { get; set; }

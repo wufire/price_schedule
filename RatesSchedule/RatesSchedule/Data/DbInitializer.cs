@@ -17,7 +17,7 @@ namespace RatesSchedule.Data
       var rateItems = new RateItem[]
       {
         new RateItem
-          {
+        {
             Days = "mon,tues,thurs",
             Times = "0900-2100",
             Price = 1500

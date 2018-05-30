@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -139,6 +140,11 @@ namespace RatesSchedule.Controllers
 
 
       return Ok();
+    }
+
+    public static long? RateGivenTime(DateTime start, DateTime end, List<RateDomainItem> rateItems)
+    {
+      return null;
     }
   }
 }
