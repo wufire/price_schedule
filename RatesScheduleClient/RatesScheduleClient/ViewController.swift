@@ -134,7 +134,9 @@ class ViewController: UIViewController {
                     (responseData: Data?, response: URLResponse?, error: Error?) in
                     let responseString = String(data: responseData!, encoding: String.Encoding.utf8) as String?
                     
-                    self.showSimpleAlert(title: "Price", message: "The price for the selected time is \(responseString ?? "not found").")
+                    DispatchQueue.main.async(execute:{
+                        self.showSimpleAlert(title: "Price", message: "The price for the selected time is \(responseString ?? "not found").")
+                    })
                 }
             )
             task.resume()
