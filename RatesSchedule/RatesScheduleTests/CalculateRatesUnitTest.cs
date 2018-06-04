@@ -10,6 +10,8 @@ namespace RatesScheduleTests
   {
     private readonly string startTime = "2015-07-01T07:00:00Z";
     private readonly string endTime = "2015-07-01T12:00:00Z";
+    private readonly string startTime_iOS = "2015-07-01 07:00:00 +0000";
+    private readonly string endTime_iOS = "2015-07-01 12:00:00 +0000";
 
     private readonly RateItem[] rateItems = new RateItem[]
     {
@@ -42,11 +44,18 @@ namespace RatesScheduleTests
       }
 
       long? result = RatesController.RateGivenTime(
-        DateTime.Parse(startTime),
-        DateTime.Parse(endTime),
+        DateTimeOffset.Parse(startTime).DateTime,
+        DateTimeOffset.Parse(endTime).DateTime,
         domainItems);
 
       Assert.Equal(1500, result);
+
+      long? result_iOS = RatesController.RateGivenTime(
+        DateTimeOffset.Parse(startTime_iOS).DateTime,
+        DateTimeOffset.Parse(endTime_iOS).DateTime,
+        domainItems);
+
+      Assert.Equal(1500, result_iOS);
     }
   }
 }
