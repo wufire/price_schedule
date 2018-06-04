@@ -25,7 +25,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 <connections>
-                                    <action selector="textFieldTouchUpInside:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="g4C-vc-CSv"/>
+                                    <action selector="textFieldEditBegin:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="g4C-vc-CSv"/>
+                                    <action selector="textFieldValueChange:" destination="BYZ-38-t0r" eventType="valueChanged" id="jZT-uD-31A"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="End Time" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sXw-3m-slY">
@@ -34,7 +35,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 <connections>
-                                    <action selector="textFieldTouchUpInside:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="QCi-p1-W4Q"/>
+                                    <action selector="textFieldEditBegin:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="QCi-p1-W4Q"/>
+                                    <action selector="textFieldValueChange:" destination="BYZ-38-t0r" eventType="valueChanged" id="R9y-ZL-1V5"/>
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MR4-s6-HNi">

@@ -12,12 +12,15 @@ class ViewController: UIViewController {
     
     // Change this base URL to your RatesSchedule server instance
     private let baseUrl = URL(string: "http://localhost:5000/")!
+    private let SERVER_DATE_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss'Z'"
     
     @IBOutlet weak var startTimeTextField: UITextField!
     @IBOutlet weak var endTimeTextField: UITextField!
     
     let datePicker = UIDatePicker()
     let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(dateDonePressed(sender:)))
+    
+    let ONE_HOUR = 1.0 * 60.0 * 60.0
     
     var startTime = Date()
     var endTime = Date()
@@ -28,6 +31,8 @@ class ViewController: UIViewController {
         
         datePicker.datePickerMode = UIDatePickerMode.dateAndTime
         datePicker.timeZone = NSTimeZone.system;
+        datePicker.addTarget(self, action: #selector(textFieldValueChange(_:)), for: UIControlEvents.valueChanged)
+        datePicker.tag = 0
         
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
@@ -49,15 +54,10 @@ class ViewController: UIViewController {
     @objc func dateDonePressed(sender: UIBarButtonItem) {
         if (sender.tag == 0) {
             startTime = datePicker.date
-            startTimeTextField.text = formatDate(date: datePicker.date)
-            datePicker.setDate(
-                datePicker.date.addingTimeInterval(
-                    1.0 * 60.0 * 60.0
-                ), animated: false
-            )
+            startTimeTextField.text = formatDateForDisplay(date: datePicker.date)
         } else if (sender.tag == 1) {
             endTime = datePicker.date
-            endTimeTextField.text = formatDate(date: datePicker.date)
+            endTimeTextField.text = formatDateForDisplay(date: datePicker.date)
             
             canSubmit = validateDates()
         }
@@ -67,8 +67,8 @@ class ViewController: UIViewController {
     @IBAction func submitDates(_ sender: Any) {
         if (validateDates()) {
             let jsonObject: [String: String] = [
-                "starttime": formatDate(date: startTime),
-                "endtime": formatDate(date: endTime)
+                "starttime": formatDateForServer(date: startTime),
+                "endtime": formatDateForServer(date: endTime)
             ]
             do {
                 let dateData = try JSONSerialization.data(withJSONObject: jsonObject, options: JSONSerialization.WritingOptions())
@@ -88,19 +88,53 @@ class ViewController: UIViewController {
     }
     
     // TextField Delegates
-    @IBAction func textFieldTouchUpInside(_ sender: UITextField) {
+    @IBAction func textFieldEditBegin(_ sender: UITextField) {
         if (sender === startTimeTextField) {
-            doneButton.tag = 0
+            datePicker.tag = 0
+            datePicker.setDate(startTime, animated: true)
         } else if (sender === endTimeTextField) {
-            doneButton.tag = 1
+            datePicker.tag = 1
+            if (endTimeTextField.text == "") {
+                // Add one hour to the date for endTime date convenience
+                datePicker.setDate(
+                    startTime.addingTimeInterval(ONE_HOUR), animated: false
+                )
+            } else {
+                datePicker.setDate(endTime, animated: true)
+            }
+        }
+        doneButton.tag = datePicker.tag
+    }
+    
+    @IBAction func textFieldValueChange(_ sender: UIDatePicker) {
+        if (sender.tag == 0) {
+            startTime = datePicker.date
+            startTimeTextField.text = formatDateForDisplay(date: datePicker.date)
+        } else if (sender.tag == 1) {
+            endTime = datePicker.date
+            endTimeTextField.text = formatDateForDisplay(date: datePicker.date)
+            
+            canSubmit = validateDates()
         }
     }
     
     // Helper functions
-    func formatDate(date: Date) -> String {
+    func formatDateForServer(date: Date) -> String {
+        return formatDate(date: date, format: SERVER_DATE_FORMAT_STRING)
+    }
+    
+    func formatDate(date: Date, format: String) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        formatter.dateFormat = format
         
+        return formatter.string(from: date)
+    }
+    
+    func formatDateForDisplay(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = DateFormatter.Style.short
+        formatter.timeStyle = DateFormatter.Style.short
+        formatter.doesRelativeDateFormatting = true
         return formatter.string(from: date)
     }
     
