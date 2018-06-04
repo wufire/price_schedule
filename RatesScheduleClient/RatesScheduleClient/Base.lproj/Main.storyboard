@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,9 +19,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Start Time" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mhC-ya-jIJ">
-                                <rect key="frame" x="16" y="125" width="343" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Start Time" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mhC-ya-jIJ">
+                                <rect key="frame" x="16" y="149" width="343" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
@@ -28,9 +28,8 @@
                                     <action selector="textFieldTouchUpInside:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="g4C-vc-CSv"/>
                                 </connections>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="End Time" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sXw-3m-slY">
-                                <rect key="frame" x="16" y="163" width="343" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="End Time" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sXw-3m-slY">
+                                <rect key="frame" x="16" y="187" width="343" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
@@ -38,9 +37,8 @@
                                     <action selector="textFieldTouchUpInside:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="QCi-p1-W4Q"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MR4-s6-HNi">
-                                <rect key="frame" x="16" y="201" width="343" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MR4-s6-HNi">
+                                <rect key="frame" x="16" y="225" width="343" height="30"/>
                                 <state key="normal" title="Submit"/>
                                 <connections>
                                     <action selector="submitDates:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3Tn-ds-8o8"/>
@@ -48,6 +46,17 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="sXw-3m-slY" firstAttribute="trailing" secondItem="mhC-ya-jIJ" secondAttribute="trailing" id="FwV-PN-tAm"/>
+                            <constraint firstItem="mhC-ya-jIJ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="105" id="LVN-B5-VXN"/>
+                            <constraint firstItem="MR4-s6-HNi" firstAttribute="top" secondItem="sXw-3m-slY" secondAttribute="bottom" constant="8" symbolic="YES" id="LjN-Pa-fWu"/>
+                            <constraint firstItem="mhC-ya-jIJ" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="MYW-lX-Wtz"/>
+                            <constraint firstItem="mhC-ya-jIJ" firstAttribute="leading" secondItem="MR4-s6-HNi" secondAttribute="leading" id="QDu-gN-c8K"/>
+                            <constraint firstItem="mhC-ya-jIJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="VjY-qN-CWX"/>
+                            <constraint firstItem="sXw-3m-slY" firstAttribute="leading" secondItem="mhC-ya-jIJ" secondAttribute="leading" id="jJg-HV-Flg"/>
+                            <constraint firstItem="sXw-3m-slY" firstAttribute="top" secondItem="mhC-ya-jIJ" secondAttribute="bottom" constant="8" symbolic="YES" id="mkQ-ZZ-K05"/>
+                            <constraint firstItem="mhC-ya-jIJ" firstAttribute="trailing" secondItem="MR4-s6-HNi" secondAttribute="trailing" id="uNP-S1-vzC"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
